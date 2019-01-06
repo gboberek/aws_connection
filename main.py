@@ -1,22 +1,19 @@
-import boto3
+import click
+import session
 
-"""
-client = boto3.client(
-    's3',
-    aws_access_key_id=ACCESS_KEY,
-    aws_secret_access_key=SECRET_KEY,
-    aws_session_token=SESSION_TOKEN,
-)
+@click.command()
+@click.option('--access_key',  help='aws access key')
+@click.option('--secret_key',  help='secret key part')
 
-# Or via the Session
-session = boto3.Session(
-    aws_access_key_id=ACCESS_KEY,
-    aws_secret_access_key=SECRET_KEY,
-    aws_session_token=SESSION_TOKEN,
-)
-"""
+def connection(access_key, secret_key):
+    connection = session.authentication_class(access_key, secret_key)
+    client = connection.my_session()
+    blabla(client)
 
+def blabla(session):
+    s3 = session.client('s3')
+    response = s3.list_buckets()
+    print(response)
 
-session = boto3.session.Session()
-ec2 = session.client('ec2')
-
+if __name__ == '__main__':
+    connection()
